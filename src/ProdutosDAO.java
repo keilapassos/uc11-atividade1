@@ -8,6 +8,7 @@
  * @author Adm
  */
 
+import com.mysql.cj.conf.PropertyKey;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
@@ -25,7 +26,23 @@ public class ProdutosDAO {
     public void cadastrarProduto (ProdutosDTO produto){
         
         
-        //conn = new conectaDAO().connectDB();
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+        
+        conn = new conectaDAO().connectDB();
+        
+        try{
+            PreparedStatement prepStmt = conn.prepareStatement(sql);
+            prepStmt.setString(1, produto.getNome());
+            prepStmt.setInt(2, produto.getValor());
+            prepStmt.setString(3, produto.getStatus());
+            
+            prepStmt.execute();
+            prepStmt.close();
+            
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + erro);
+        }
         
         
     }
